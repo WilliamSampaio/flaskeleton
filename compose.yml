@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  application:
+    container_name: flaskeleton-${FLASK_ENV}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: gunicorn --bind "0.0.0.0:80" flaskeleton:app --timeout 90
+    env_file: .env
+    restart: always
+    ports:
+      - ${DOCKER_HOST_PORT}:80
