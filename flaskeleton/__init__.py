@@ -1,7 +1,7 @@
 from flask import Flask
 from werkzeug.exceptions import HTTPException
 
-from .blueprints import web
+from .blueprints import api, web
 from .extensions import database, session, settings
 from .functions import error_handler
 
@@ -18,6 +18,7 @@ def create_app():
 
     # Register blueprints
     web.init_app(app)
+    api.init_app(app)
 
     return app
 
