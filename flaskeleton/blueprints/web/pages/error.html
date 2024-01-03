@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container text-center">
+    <div class="row align-items-center" style="height: 70vh;">
+        <div class="col">
+            <div class="alert alert-danger shadow p-3 rounded" role="alert">
+                <h4 class="alert-heading">Oops!</h4>
+                <p>
+                    {% if 'message' in data: %}
+                    {{ data['message'] }}
+                    {% endif %}
+                </p>
+                <hr>
+                <a href="/" class="btn btn-success btn-lg">Go back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

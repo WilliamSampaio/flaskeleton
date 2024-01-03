@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from werkzeug.exceptions import HTTPException
 
+from .blueprints import web
 from .extensions import database, session, settings
 
 
@@ -24,9 +25,8 @@ def create_app():
 
     app.register_error_handler(HTTPException, error_handler)
 
-    @app.route('/')
-    def index():
-        return 'Hello World!'
+    # Register blueprints
+    web.init_app(app)
 
     return app
 
