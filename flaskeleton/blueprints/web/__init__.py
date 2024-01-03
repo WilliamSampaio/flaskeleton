@@ -30,33 +30,33 @@ def index():
     return render_template('index.html', data=data)
 
 
-@web.route('/add-item', methods=['POST'])
-def add_item():
+@web.route('/add-task', methods=['POST'])
+def add_task():
     form = request.form.copy()
-    item = ToDoList()
-    item.description = form['description']
-    item.to_do_status_id = form['to_do_status_id']
+    task = ToDoList()
+    task.description = form['description']
+    task.to_do_status_id = form['to_do_status_id']
     if form['to_do_status_id'] != '1':
-        item.updated_at = datetime.now()
-    db.session.add(item)
+        task.updated_at = datetime.now()
+    db.session.add(task)
     db.session.commit()
     flash('Task created!', 'success')
     return redirect(url_for('web.index'))
 
 
-@web.route('/action-item', methods=['POST'])
-def action_item():
+@web.route('/action-task', methods=['POST'])
+def action_task():
     form = request.form.copy()
-    item = db.session.query(ToDoList).get(int(form['id']))
-    if not item:
+    task = db.session.query(ToDoList).get(int(form['id']))
+    if not task:
         flash('Task not found!', 'error')
         return redirect(url_for('web.index'))
     if form['action'] == 'done':
-        item.to_do_status_id = 2
-        item.updated_at = datetime.now()
+        task.to_do_status_id = 2
+        task.updated_at = datetime.now()
     elif form['action'] == 'canceled':
-        item.to_do_status_id = 3
-        item.updated_at = datetime.now()
+        task.to_do_status_id = 3
+        task.updated_at = datetime.now()
     else:
         flash('Status invalid!', 'error')
         return redirect(url_for('web.index'))
@@ -65,14 +65,14 @@ def action_item():
     return redirect(url_for('web.index'))
 
 
-@web.route('/restore-item/<int:id>', methods=['GET'])
-def restore_item(id):
-    item = db.session.query(ToDoList).get(int(id))
-    if not item:
+@web.route('/restore-task/<int:id>', methods=['GET'])
+def restore_task(id):
+    task = db.session.query(ToDoList).get(int(id))
+    if not task:
         flash('Task not found!', 'error')
         return redirect(url_for('web.index'))
-    item.to_do_status_id = 1
-    item.updated_at = datetime.now()
+    task.to_do_status_id = 1
+    task.updated_at = datetime.now()
     db.session.commit()
     flash('Task restored!', 'success')
     return redirect(url_for('web.index'))
