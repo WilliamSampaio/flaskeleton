@@ -32,6 +32,28 @@
         <div class="col">
             <h1>To Do List</h1>
             <hr>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif category == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% else %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
 
@@ -44,21 +66,71 @@
             <h5 class="card-title">Pending</h5>
             <hr>
             <ul class="list-group">
-                <li class="list-group-item">An item</li>
+                {% if data['pending']|length == 0 %}
+                <div class="alert alert-info" role="alert">
+                    No tasks yet!
+                </div>
+                {% else %}
+                {% for i in data['pending'] %}
+                <li class="list-group-item">
+                    <p>{{ i.description }} <span class="badge bg-primary rounded-pill">Created at {{ i.created_at
+                            }}</span></p>
+                    <div class="mb-2">
+                        <form id="actionItemForm" action="{{ url_for('web.action_item') }}" method="post">
+                            <input type="hidden" name="id" value="{{ i.id }}">
+                        </form>
+                        <button type="submit" form="actionItemForm" name="action" value="done"
+                            class="btn btn-success btn-sm"><ion-icon name="checkmark-done-outline"></ion-icon></button>
+                        <button type="submit" form="actionItemForm" name="action" value="canceled"
+                            class="btn btn-danger btn-sm"><ion-icon name="close-circle-outline"></ion-icon></button>
+                    </div>
+                </li>
+                {% endfor %}
+                {% endif %}
             </ul>
         </div>
         <div class="card-body">
             <h5 class="card-title">Done</h5>
             <hr>
             <ul class="list-group">
-                <li class="list-group-item">An item</li>
+                {% if data['done']|length == 0 %}
+                <div class="alert alert-info" role="alert">
+                    No tasks completed yet!
+                </div>
+                {% else %}
+                {% for i in data['done'] %}
+                <li class="list-group-item">
+                    <p>{{ i.description }}
+                        <span class="badge bg-success rounded-pill">Finished in {{ i.updated_at }}</span>
+                        <a href="/restore-item/{{ i.id }}">
+                            <span class="badge bg-warning rounded-pill">Restore item</span>
+                        </a>
+                    </p>
+                </li>
+                {% endfor %}
+                {% endif %}
             </ul>
         </div>
         <div class="card-body">
             <h5 class="card-title">Canceled</h5>
             <hr>
             <ul class="list-group">
-                <li class="list-group-item">An item</li>
+                {% if data['canceled']|length == 0 %}
+                <div class="alert alert-info" role="alert">
+                    No tasks canceled yet!
+                </div>
+                {% else %}
+                {% for i in data['canceled'] %}
+                <li class="list-group-item">
+                    <p>{{ i.description }} <span class="badge bg-danger rounded-pill">Canceled in {{ i.updated_at
+                            }}</span>
+                        <a href="/restore-item/{{ i.id }}">
+                            <span class="badge bg-warning rounded-pill">Restore item</span>
+                        </a>
+                    </p>
+                </li>
+                {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -73,7 +145,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addItemForm" action="" method="post">
+                <form id="addItemForm" action="{{ url_for('web.add_item') }}" method="post">
+                    <input id="addItemId" type="hidden" name="id">
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" maxlength="50" class="form-control" id="description" name="description">
@@ -81,9 +154,9 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Status</label>
                         <select class="form-select" id="to_do_status_id" name="to_do_status_id">
-                            <option value="1" selected>One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {% for s in data['status'] %}
+                            <option value="{{ s.id }}">{{ s.description }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </form>
