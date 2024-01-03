@@ -4,6 +4,8 @@ Revision ID: 90a7151cfe3c
 Revises:
 Create Date: 2024-01-03 12:40:18.297915
 """
+from datetime import datetime
+
 import sqlalchemy as sa
 from alembic import op
 
@@ -49,7 +51,10 @@ def upgrade():
     op.bulk_insert(
         tbl_list,
         [
-            {'description': 'Develop my amazing Flask App!'},
+            {
+                'description': 'Develop my amazing Flask App!',
+                'created_at': datetime.now(),
+            },
         ],
     )
 
