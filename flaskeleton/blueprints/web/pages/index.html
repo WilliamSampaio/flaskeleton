@@ -19,7 +19,8 @@
                 </li>
             </ul>
             <div class="d-flex">
-                <a href="https://github.com/WilliamSampaio/flaskeleton/tree/master" class="btn btn-outline-danger">Fork
+                <a href="https://github.com/WilliamSampaio/flaskeleton/tree/master" target="_blank"
+                    class="btn btn-outline-danger">Fork
                     me on GitHub <ion-icon name="git-branch-outline"></ion-icon></a>
             </div>
         </div>
@@ -59,8 +60,8 @@
 
     <div class="card shadow mb-5 bg-body rounded">
         <div class="card-header p-3 text-end">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addItemModal">Add
-                Item</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal">Add
+                Task</button>
         </div>
         <div class="card-body">
             <h5 class="card-title">Pending</h5>
@@ -76,13 +77,13 @@
                     <p>{{ i.description }} <span class="badge bg-primary rounded-pill">Created at {{ i.created_at
                             }}</span></p>
                     <div class="mb-2">
-                        <form id="actionItemForm" action="{{ url_for('web.action_item') }}" method="post">
+                        <form id="actionTaskForm" action="{{ url_for('web.action_item') }}" method="post">
                             <input type="hidden" name="id" value="{{ i.id }}">
                         </form>
-                        <button type="submit" form="actionItemForm" name="action" value="done"
-                            class="btn btn-success btn-sm"><ion-icon name="checkmark-done-outline"></ion-icon></button>
-                        <button type="submit" form="actionItemForm" name="action" value="canceled"
-                            class="btn btn-danger btn-sm"><ion-icon name="close-circle-outline"></ion-icon></button>
+                        <button type="submit" form="actionTaskForm" name="action" value="done"
+                            class="btn btn-success btn-sm">Mark as done</button>
+                        <button type="submit" form="actionTaskForm" name="action" value="canceled"
+                            class="btn btn-danger btn-sm">Cancel task</button>
                     </div>
                 </li>
                 {% endfor %}
@@ -100,12 +101,12 @@
                 {% else %}
                 {% for i in data['done'] %}
                 <li class="list-group-item">
-                    <p>{{ i.description }}
+                    <div>{{ i.description }}
                         <span class="badge bg-success rounded-pill">Finished in {{ i.updated_at }}</span>
-                        <a href="/restore-item/{{ i.id }}">
+                        <a href="{{ url_for('web.restore_item', id=i.id) }}">
                             <span class="badge bg-warning rounded-pill">Restore item</span>
                         </a>
-                    </p>
+                    </div>
                 </li>
                 {% endfor %}
                 {% endif %}
@@ -122,12 +123,12 @@
                 {% else %}
                 {% for i in data['canceled'] %}
                 <li class="list-group-item">
-                    <p>{{ i.description }} <span class="badge bg-danger rounded-pill">Canceled in {{ i.updated_at
+                    <div>{{ i.description }} <span class="badge bg-danger rounded-pill">Canceled in {{ i.updated_at
                             }}</span>
-                        <a href="/restore-item/{{ i.id }}">
+                        <a href="{{ url_for('web.restore_item', id=i.id) }}">
                             <span class="badge bg-warning rounded-pill">Restore item</span>
                         </a>
-                    </p>
+                    </div>
                 </li>
                 {% endfor %}
                 {% endif %}
@@ -137,16 +138,16 @@
 
 </div>
 
-<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addItemModalLabel">New Item</h1>
+                <h1 class="modal-title fs-5" id="addTaskModalLabel">New Task</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addItemForm" action="{{ url_for('web.add_item') }}" method="post">
-                    <input id="addItemId" type="hidden" name="id">
+                <form id="addTaskForm" action="{{ url_for('web.add_item') }}" method="post">
+                    <input id="addTaskId" type="hidden" name="id">
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" maxlength="50" class="form-control" id="description" name="description">
@@ -163,7 +164,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="addItemForm" class="btn btn-primary">Save</button>
+                <button type="submit" form="addTaskForm" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
