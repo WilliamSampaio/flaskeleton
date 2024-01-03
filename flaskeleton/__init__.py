@@ -1,19 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask
 from werkzeug.exceptions import HTTPException
 
 from .blueprints import web
 from .extensions import database, session, settings
-
-
-def error_handler(e):
-    data = {}
-    desc = e.description
-    msg = desc['message'] if 'message' in desc else desc
-    data['message'] = f'Error({e.code} - {e.name}): {msg}'
-    return (
-        render_template('error.html', data=data),
-        e.code,
-    )
+from .functions import error_handler
 
 
 def create_app():
@@ -23,6 +13,7 @@ def create_app():
     session.init_app(app)
     database.init_app(app)
 
+    # Register error handler
     app.register_error_handler(HTTPException, error_handler)
 
     # Register blueprints
