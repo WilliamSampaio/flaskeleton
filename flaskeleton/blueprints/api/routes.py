@@ -78,24 +78,28 @@ class TaskPost(Resource):
         db.session.commit()
         return task, 201
 
-# @api.route('/task/<int:id>')
-# def task_get(id):
-#     ...
 
+@ns.route('/task/<int:id>')
+class Task(Resource):
+    @ns.marshal_with(task)
+    def get(self, id):
+        task = db.session.query(ToDoList).get(int(id))
+        if not task:
+            ns.abort(404, f"Todo {id} doesn't exist")
+        return task, 200
 
-# @api.route('/task/<string:status>')
-# def task_get_by_status(status):
-#     ...
-
-
-# @api.route('/task/<int:id>', methods=['POST'])
-# def task_post(id):
-#     ...
-
-
-# @api.route('/task/<int:id>', methods=['PATCH'])
-# def task_patch(id):
-#     ...
+    @ns.expect(new_task)
+    @ns.marshal_with(task, code=201)
+    def put(self, id):
+        data = ns.payload
+        task = db.session.query(ToDoList).get(int(id))
+        if not task:
+            ns.abort(404, f"Todo {id} doesn't exist")
+        task.description = data['description']
+        task.to_do_status_id = data['to_do_status_id']
+        task.updated_at = datetime.now()
+        db.session.commit()
+        return task, 200
 
 
 @ns.route('/status')
