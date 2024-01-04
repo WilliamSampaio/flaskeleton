@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 
 from flaskeleton.extensions.database import db
-from flaskeleton.models import ToDoList
+from flaskeleton.models import DoDoStatus, ToDoList
 
 ns = Namespace('api', description='API operations')
 
@@ -14,6 +14,14 @@ task = ns.model(
         'to_do_status_id': fields.Integer(required=True),
         'created_at': fields.DateTime(required=True),
         'updated_at': fields.DateTime(),
+    },
+)
+
+status = ns.model(
+    'Status',
+    {
+        'id': fields.Integer(required=True),
+        'description': fields.String(required=True),
     },
 )
 
@@ -57,6 +65,10 @@ class TaskList(Resource):
 #     ...
 
 
-# @api.route('/status')
-# def status_list():
-#     ...
+@ns.route('/status')
+class StatusList(Resource):
+    @ns.marshal_list_with(status)
+    def get(self):
+        return [
+            task.__dict__.copy() for task in db.session.query(DoDoStatus).all()
+        ], 200
