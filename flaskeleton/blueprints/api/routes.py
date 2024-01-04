@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_restx import Namespace, Resource, fields
 
 from flaskeleton.extensions.database import db
@@ -14,6 +16,14 @@ task = ns.model(
         'to_do_status_id': fields.Integer(required=True),
         'created_at': fields.DateTime(required=True),
         'updated_at': fields.DateTime(),
+    },
+)
+
+new_task = ns.model(
+    'NewTask',
+    {
+        'description': fields.String(required=True),
+        'to_do_status_id': fields.Integer(required=True),
     },
 )
 
@@ -52,6 +62,21 @@ class TaskListByStatus(Resource):
             )
         ], 200
 
+
+@ns.route('/task')
+class TaskPost(Resource):
+    @ns.expect(new_task)
+    @ns.marshal_with(task, code=201)
+    def post(self):
+        data = ns.payload
+        task = ToDoList()
+        task.description = data['description']
+        task.to_do_status_id = data['to_do_status_id']
+        if data['to_do_status_id'] != 1:
+            task.updated_at = datetime.now()
+        db.session.add(task)
+        db.session.commit()
+        return task, 201
 
 # @api.route('/task/<int:id>')
 # def task_get(id):
