@@ -10,7 +10,7 @@ api = Api(
     version='0.1.0',
     title='Flaskeleton ToDo API',
     description='Flaskeleton ToDo API',
-    doc='/apidocs',
+    doc='/apidoc',
 )
 
 
