@@ -1,0 +1,16 @@
+[default]
+APP_VERSION = "0.1.0"
+APP_SECRET_KEY = "fl@5k3l3t0n!"
+
+SESSION_PERMANENT = false
+SESSION_TYPE = "filesystem"
+
+SQLALCHEMY_TRACK_MODIFICATIONS = false
+
+[development]
+APP_NAME = "Flaskeleton (Dev)"
+SQLALCHEMY_DATABASE_URI = "sqlite:///database.sqlite3"
+
+[production]
+APP_NAME = "Flaskeleton"
+SQLALCHEMY_DATABASE_URI = "sqlite:///database.sqlite3"
