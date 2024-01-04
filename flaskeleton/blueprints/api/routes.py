@@ -36,13 +36,9 @@ class Hello(Resource):
 class TaskList(Resource):
     @ns.marshal_list_with(task)
     def get(self):
-        data = []
-        for task in db.session.query(ToDoList).all():
-            task_data = task.__dict__.copy()
-            if '_sa_instance_state' in task_data:
-                del task_data['_sa_instance_state']
-            data.append(task_data)
-        return data, 200
+        return [
+            task.__dict__.copy() for task in db.session.query(ToDoList).all()
+        ], 200
 
 
 # @api.route('/task/<int:id>')
