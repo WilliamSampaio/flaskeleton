@@ -41,6 +41,18 @@ class TaskList(Resource):
         ], 200
 
 
+@ns.route('/tasks/<string:status>')
+class TaskListByStatus(Resource):
+    @ns.marshal_list_with(task)
+    def get(self, status):
+        return [
+            task.__dict__.copy()
+            for task in db.session.query(ToDoList).filter_by(
+                to_do_status_id=int(status)
+            )
+        ], 200
+
+
 # @api.route('/task/<int:id>')
 # def task_get(id):
 #     ...
