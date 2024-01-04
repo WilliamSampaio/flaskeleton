@@ -7,7 +7,7 @@ def error_handler(e):
     msg = desc['message'] if 'message' in desc else desc
     data['message'] = f'Error({e.code} - {e.name}): {msg}'
     if request.path.startswith('/api/'):
-        return {'code': e.code, 'name': e.name}, e.code
+        return {'code': e.code, 'message': e.name}, e.code
     return (
         render_template('error.html', data=data),
         e.code,
