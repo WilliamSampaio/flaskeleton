@@ -7,7 +7,7 @@ api_bp = Blueprint('api', __name__)
 
 api = Api(
     api_bp,
-    version='0.1.0',
+    version='0.1.1',
     title='Flaskeleton ToDo API',
     description='Flaskeleton ToDo API',
     doc='/apidocs',
