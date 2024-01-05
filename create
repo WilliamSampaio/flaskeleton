@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+clone_flaskeleton() {
+    folder=$1
+    git clone https://github.com/WilliamSampaio/flaskeleton.git $folder;
+    cd $folder;
+    rm -rf .git;
+    exit 0;
+}
+
+while getopts p:f: flag
+do
+    case "${flag}" in
+        p) cd "${OPTARG}";;
+        f) clone_flaskeleton "${OPTARG}";;
+        \?) echo "Erro. Arg invalid."
+    esac
+done
+
+echo -e "\n - Flaskeleton - "
+echo -e "\nUsage:\n"
+echo -e "\t-p (path): Path where the project will be created."
+echo -e "\t-f (folder): Project folder name.\n"
+echo -e "More information: https://github.com/WilliamSampaio/flaskeleton"
