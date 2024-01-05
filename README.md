@@ -21,15 +21,15 @@ flaskeleton create --path /path/of/projects project_name
 #### Using CURL
 
 ```bash
-# curl -s https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/develop/create | bash
-bash <(curl -s https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/develop/create) -p /path/of/projects -f project_name
+# curl -s https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/master/create | bash
+bash <(curl -s https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/master/create) -p /path/of/projects -f project_name
 ```
 
 #### Using Wget
 
 ```bash
-# wget -qO - https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/develop/create | bash
-bash <(wget -qO - https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/develop/create) -p /path/of/projects -f project_name
+# wget -qO - https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/master/create | bash
+bash <(wget -qO - https://raw.githubusercontent.com/WilliamSampaio/flaskeleton/master/create) -p /path/of/projects -f project_name
 ```
 
 ### Git
