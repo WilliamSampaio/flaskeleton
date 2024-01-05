@@ -6,7 +6,7 @@ description = ""
 license = "MIT"
 name = "flaskeleton"
 readme = "README.md"
-version = "0.1.0"
+version = "0.1.2"
 
 [tool.poetry.dependencies]
 dynaconf = "^3.2.4"
