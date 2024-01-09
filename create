@@ -11,7 +11,7 @@ clone_flaskeleton() {
 while getopts p:f: flag
 do
     case "${flag}" in
-        p) cd "${OPTARG}";;
+        p) cd "${OPTARG}" || exit 1;;
         f) clone_flaskeleton "${OPTARG}";;
         \?) echo "Erro. Arg invalid."
     esac
