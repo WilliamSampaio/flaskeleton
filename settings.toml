@@ -1,5 +1,5 @@
 [default]
-APP_VERSION = "0.1.3"
+APP_VERSION = "0.1.4"
 APP_SECRET_KEY = "fl@5k3l3t0n!"
 
 SESSION_PERMANENT = false
